@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 const initialValue = {
   email: "",
@@ -7,7 +8,7 @@ const initialValue = {
 const Login = () => {
   const { store, actions } = useContext(Context);
   const [registerData, setRegisterData] = useState(initialValue);
-
+  const navigate = useNavigate();
   const handleChange = (event) => {
     // Va a modificar nuestro estado cuando usemos los inputs
     setRegisterData({
@@ -16,8 +17,10 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = () => {
-    actions.loginUser(registerData);
+  const handleSubmit = async () => {
+    const result = await actions.loginUser(registerData);
+    if (result) return navigate("/private");
+    alert("Inicio invalido");
   };
   return (
     <div className="text-center mt-5">
